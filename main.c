@@ -10,6 +10,39 @@
 
 #endif
 
+
+
+char specialtyNames[NUMBER_OF_SPECIALTIES][30] =
+{
+    "General Practice",
+    "Paediatrics",
+    "Cardiology",
+    "Neurology"
+};
+
+float specialtyFees[NUMBER_OF_SPECIALTIES] =
+{
+    1500.00,
+    2500.00,
+    4500.00,
+    5000.00
+};
+
+int consultationTimes[NUMBER_OF_SPECIALTIES] =
+{
+    15,
+    20,
+    30,
+    30
+};
+
+int dailyPatientCapacities[NUMBER_OF_SPECIALTIES] =
+{
+    30,
+    20,
+    12,
+    10
+};
 int main()
 {
     int menuChoice;
