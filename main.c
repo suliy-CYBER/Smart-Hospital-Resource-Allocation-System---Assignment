@@ -43,6 +43,31 @@ int dailyPatientCapacities[NUMBER_OF_SPECIALTIES] =
     10
 };
 
+char wardNames[NUMBER_OF_WARDS][30] =
+{
+    "General Ward",
+    "Paediatric Ward",
+    "Surgical Ward",
+    "ICU"
+};
+
+float wardDailyRates[NUMBER_OF_WARDS] =
+{
+    3000.00,
+    6000.00,
+    12000.00,
+    25000.00
+};
+
+int wardBedCapacities[NUMBER_OF_WARDS] =
+{
+    20,
+    10,
+    10,
+    5
+};
+
+
 int main()
 {
     int menuChoice;
