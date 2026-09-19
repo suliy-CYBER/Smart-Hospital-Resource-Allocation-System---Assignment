@@ -67,6 +67,8 @@ int wardBedCapacities[NUMBER_OF_WARDS] =
     5
 };
 
+int bedOccupancyStatus[NUMBER_OF_WARDS][MAX_BEDS] = {0};
+
 
 int main()
 {
