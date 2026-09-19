@@ -11,7 +11,6 @@
 #endif
 
 
-
 char specialtyNames[NUMBER_OF_SPECIALTIES][30] =
 {
     "General Practice",
@@ -43,6 +42,7 @@ int dailyPatientCapacities[NUMBER_OF_SPECIALTIES] =
     12,
     10
 };
+
 int main()
 {
     int menuChoice;
