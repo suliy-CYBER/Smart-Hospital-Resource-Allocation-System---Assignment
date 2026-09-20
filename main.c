@@ -98,6 +98,10 @@ void searchPatient(void);
 void displayPriorityOrder(void);
 void generateHospitalReport(void);
 
+void saveBedStatus(void);
+void loadBedStatus(void);
+void savePatientRecord(int patientIndex);
+
 
 int assignAvailableBed(int wardId);
 
@@ -161,7 +165,9 @@ int main(void)
                 break;
 
             case 7:
-                printf("\nSaving data and exiting...\n");
+                saveBedStatus();
+                printf("\nData saved successfully.\n");
+                printf("Thank you for using Smart Hospital System.\n");
                 break;
 
             default:
@@ -409,6 +415,40 @@ void generateHospitalReport()
            totalDiscounts);
 }
 
+
+void saveBedStatus()
+{
+    FILE *file;
+    int wardIndex;
+    int bedIndex;
+
+    file = fopen("beds_status.txt", "w");
+
+    if (file == NULL)
+    {
+        printf("Unable to save bed status.\n");
+        return;
+    }
+
+    for (wardIndex = 0;
+         wardIndex < NUMBER_OF_WARDS;
+         wardIndex++)
+    {
+        for (bedIndex = 0;
+             bedIndex < wardBedCapacities[wardIndex];
+             bedIndex++)
+        {
+            fprintf(file, "%d ",
+                    bedOccupancyStatus[wardIndex][bedIndex]);
+        }
+
+        fprintf(file, "\n");
+    }
+
+    fclose(file);
+
+    printf("Bed status saved successfully.\n");
+}
 
 
 void registerPatient(void)
