@@ -96,6 +96,8 @@ void registerPatient(void);
 void displayPatients(void);
 void searchPatient(void);
 void displayPriorityOrder(void);
+void generateHospitalReport(void);
+
 
 int assignAvailableBed(int wardId);
 
@@ -151,11 +153,11 @@ int main(void)
                 break;
 
             case 5:
-                   displayPriorityOrder();
+                displayPriorityOrder();
                 break;
 
             case 6:
-                printf("\nHospital reports selected.\n");
+                generateHospitalReport();
                 break;
 
             case 7:
@@ -357,6 +359,56 @@ void displayPriorityOrder(void)
                patientUrgencyLevels[currentPatient]);
     }
 }
+
+
+
+void generateHospitalReport()
+{
+    int patientIndex;
+    int normalPatients = 0;
+    int urgentPatients = 0;
+    int criticalPatients = 0;
+
+    float totalRevenue = 0.00;
+    float totalDiscounts = 0.00;
+
+    for (patientIndex = 0;
+         patientIndex < totalPatients;
+         patientIndex++)
+    {
+        if (patientUrgencyLevels[patientIndex] == 1)
+        {
+            normalPatients++;
+        }
+        else if (patientUrgencyLevels[patientIndex] == 2)
+        {
+            urgentPatients++;
+        }
+        else if (patientUrgencyLevels[patientIndex] == 3)
+        {
+            criticalPatients++;
+        }
+
+        totalRevenue += patientFinalBills[patientIndex];
+        totalDiscounts += patientDiscounts[patientIndex];
+    }
+
+    printf("\n");
+    printf("==================================================\n");
+    printf("             HOSPITAL REPORT\n");
+    printf("==================================================\n");
+
+    printf("\nPatients by Urgency\n");
+    printf("Normal   : %d\n", normalPatients);
+    printf("Urgent   : %d\n", urgentPatients);
+    printf("Critical : %d\n", criticalPatients);
+
+    printf("\nFinancial Summary\n");
+    printf("Total Revenue   : LKR %.2f\n", totalRevenue);
+    printf("Total Discounts : LKR %.2f\n",
+           totalDiscounts);
+}
+
 
 
 void registerPatient(void)
