@@ -95,6 +95,8 @@ void displayBedStatus(void);
 void registerPatient(void);
 void displayPatients(void);
 void searchPatient(void);
+void displayPriorityOrder(void);
+
 int assignAvailableBed(int wardId);
 
 float calculateWaitingTime(int specialtyId)
@@ -149,7 +151,7 @@ int main(void)
                 break;
 
             case 5:
-                printf("\nPriority order selected.\n");
+                   displayPriorityOrder();
                 break;
 
             case 6:
@@ -307,6 +309,54 @@ void searchPatient()
 }
 
 
+void displayPriorityOrder(void)
+{
+    int patientOrder[MAX_PATIENTS];
+
+    int currentPosition;
+    int previousPosition;
+    int currentPatient;
+
+    if (totalPatients == 0)
+    {
+        printf("\nNo patients are registered.\n");
+        return;
+    }
+
+    for (currentPosition = 0; currentPosition < totalPatients; currentPosition++)
+    {
+        patientOrder[currentPosition] = currentPosition;
+    }
+
+    for (currentPosition = 1; currentPosition < totalPatients; currentPosition++)
+    {
+        currentPatient = patientOrder[currentPosition];
+        previousPosition = currentPosition - 1;
+
+        while (previousPosition >= 0 &&
+               patientUrgencyLevels[patientOrder[previousPosition]] < patientUrgencyLevels[currentPatient])
+        {
+            patientOrder[previousPosition + 1] = patientOrder[previousPosition];
+            previousPosition--;
+        }
+
+        patientOrder[previousPosition + 1] = currentPatient;
+    }
+
+    printf("\n==================================================\n");
+    printf("               PATIENT PRIORITY ORDER\n");
+    printf("==================================================\n");
+
+    for (currentPosition = 0; currentPosition < totalPatients; currentPosition++)
+    {
+        currentPatient = patientOrder[currentPosition];
+
+        printf("%d. %s - Urgency Level %d\n",
+               currentPosition + 1,
+               patientNames[currentPatient],
+               patientUrgencyLevels[currentPatient]);
+    }
+}
 
 
 void registerPatient(void)
