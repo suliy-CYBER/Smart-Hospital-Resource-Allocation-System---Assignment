@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #ifndef HOSPITAL_H
 #define HOSPITAL_H
@@ -93,6 +94,7 @@ void calculatePatientBill(int patientIndex);
 void displayBedStatus(void);
 void registerPatient(void);
 void displayPatients(void);
+void searchPatient(void);
 int assignAvailableBed(int wardId);
 
 float calculateWaitingTime(int specialtyId)
@@ -143,7 +145,7 @@ int main(void)
                 break;
 
             case 4:
-                printf("\nPatient search selected.\n");
+                searchPatient();
                 break;
 
             case 5:
@@ -211,6 +213,7 @@ void displayBedStatus(void)
     }
 }
 
+
 void displayPatients(void)
 {
     if (totalPatients == 0)
@@ -268,6 +271,43 @@ void displayPatients(void)
 
     printf("================================================================================\n");
 }
+
+
+void searchPatient()
+{
+    char searchPatientName[50];
+    int patientIndex;
+    int foundPatient = 0;
+
+    printf("\nEnter patient name to search: ");
+    scanf(" %[^\n]", searchPatientName);
+
+    for (patientIndex = 0;
+         patientIndex < totalPatients;
+         patientIndex++)
+    {
+        if (strcmp(patientNames[patientIndex],
+                   searchPatientName) == 0)
+        {
+            printf("\nPatient Found\n");
+            printf("-----------------------------\n");
+            printf("Name : %s\n",
+                   patientNames[patientIndex]);
+            printf("Age  : %d\n",
+                   patientAges[patientIndex]);
+
+            foundPatient = 1;
+        }
+    }
+
+    if (foundPatient == 0)
+    {
+        printf("\nPatient not found.\n");
+    }
+}
+
+
+
 
 void registerPatient(void)
 {
