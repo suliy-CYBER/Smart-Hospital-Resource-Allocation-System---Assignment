@@ -38,7 +38,6 @@ int dailyPatientCapacities[NUMBER_OF_SPECIALTIES] = {
     10
 };
 
-
 int specialtyQueueCounts[NUMBER_OF_SPECIALTIES] = {0};
 
 char wardNames[NUMBER_OF_WARDS][30] = {
@@ -77,11 +76,11 @@ int patientAssignedBeds[MAX_PATIENTS];
 int totalPatients = 0;
 
 
+float calculateEmergencySurcharge(float baseFee, int urgencyLevel);
 float calculateWaitingTime(int specialtyId);
 void displayBedStatus(void);
 void registerPatient(void);
 int assignAvailableBed(int wardId);
-
 
 float calculateWaitingTime(int specialtyId)
 {
@@ -201,12 +200,12 @@ void registerPatient(void) {
     printf("Enter specialty: ");
     scanf("%d", &patientSpecialtyIds[patientIndex]);
 
-
     if (patientSpecialtyIds[patientIndex] >= 1 && patientSpecialtyIds[patientIndex] <= NUMBER_OF_SPECIALTIES) {
         int specId = patientSpecialtyIds[patientIndex];
         float estWaitTime = calculateWaitingTime(specId);
         printf("Estimated waiting time: %.0f minutes\n", estWaitTime);
         specialtyQueueCounts[specId - 1]++;
+    }
 
     printf("\nIs the patient admitted to a ward?\n1. Yes\n0. No\nEnter choice: ");
     scanf("%d", &patientAdmissionStatus[patientIndex]);
@@ -242,4 +241,19 @@ void registerPatient(void) {
 
     totalPatients++;
     printf("\nPatient registered successfully.\n");
+}
+
+
+float calculateEmergencySurcharge(float baseFee, int urgencyLevel)
+{
+    if (urgencyLevel == 2)
+    {
+        return baseFee * 0.20;
+    }
+    else if (urgencyLevel == 3)
+    {
+        return baseFee * 0.50;
+    }
+
+    return 0.00;
 }
