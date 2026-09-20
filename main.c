@@ -70,6 +70,8 @@ int wardBedCapacities[NUMBER_OF_WARDS] =
 int bedOccupancyStatus[NUMBER_OF_WARDS][MAX_BEDS] = {0};
 
 
+void displayBedStatus(void);
+
 int main()
 {
     int menuChoice;
@@ -129,4 +131,33 @@ int main()
     } while (menuChoice != 7);
 
     return 0;
+}
+
+
+void displayBedStatus()
+{
+    int wardIndex;
+    int bedIndex;
+
+    printf("\n");
+    printf("==================================================\n");
+    printf("                 BED STATUS\n");
+    printf("==================================================\n");
+
+    for (wardIndex = 0; wardIndex < NUMBER_OF_WARDS; wardIndex++)
+    {
+        printf("\n%s\n", wardNames[wardIndex]);
+
+        for (bedIndex = 0; bedIndex < wardBedCapacities[wardIndex]; bedIndex++)
+        {
+            if (bedOccupancyStatus[wardIndex][bedIndex] == 0)
+            {
+                printf("Bed %02d : Available\n", bedIndex + 1);
+            }
+            else
+            {
+                printf("Bed %02d : Occupied\n", bedIndex + 1);
+            }
+        }
+    }
 }
