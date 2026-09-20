@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-
 #ifndef HOSPITAL_H
 #define HOSPITAL_H
 
@@ -10,7 +9,6 @@
 #define MAX_BEDS 20
 
 #endif
-
 
 char specialtyNames[NUMBER_OF_SPECIALTIES][30] = {
     "General Practice",
@@ -65,10 +63,7 @@ int wardBedCapacities[NUMBER_OF_WARDS] = {
 
 int bedOccupancyStatus[NUMBER_OF_WARDS][MAX_BEDS] = {0};
 
-
-
 char patientNames[MAX_PATIENTS][50];
-
 int patientAges[MAX_PATIENTS];
 int patientUrgencyLevels[MAX_PATIENTS];
 int patientSpecialtyIds[MAX_PATIENTS];
@@ -79,7 +74,6 @@ int patientAssignedBeds[MAX_PATIENTS];
 
 int totalPatients = 0;
 
-
 float patientBaseFees[MAX_PATIENTS];
 float patientSurcharges[MAX_PATIENTS];
 float patientWardCosts[MAX_PATIENTS];
@@ -87,22 +81,16 @@ float patientGrossBills[MAX_PATIENTS];
 float patientDiscounts[MAX_PATIENTS];
 float patientFinalBills[MAX_PATIENTS];
 
-
-
 float calculateEmergencySurcharge(float baseFee, int urgencyLevel);
 float calculateWaitingTime(int specialtyId);
-
-
-
 float calculateWardCost(int wardId, int numberOfDays);
 float calculateAgeDiscount(float grossBill, int patientAge);
+float calculateFinalAmount(float grossBill, float discount);
 void calculatePatientBill(int patientIndex);
 
 void displayBedStatus(void);
 void registerPatient(void);
 int assignAvailableBed(int wardId);
-
-
 
 float calculateWaitingTime(int specialtyId)
 {
@@ -113,7 +101,6 @@ float calculateWaitingTime(int specialtyId)
     return specialtyQueueCounts[specialtyIndex]
            * consultationTimes[specialtyIndex];
 }
-
 
 int main(void)
 {
@@ -177,19 +164,14 @@ int main(void)
     return 0;
 }
 
-
-
 int assignAvailableBed(int wardId)
 {
-    if (wardId < 1 ||
-        wardId > NUMBER_OF_WARDS)
+    if (wardId < 1 || wardId > NUMBER_OF_WARDS)
     {
         return 0;
     }
 
-    for (int bedIndex = 0;
-         bedIndex < wardBedCapacities[wardId - 1];
-         bedIndex++)
+    for (int bedIndex = 0; bedIndex < wardBedCapacities[wardId - 1]; bedIndex++)
     {
         if (bedOccupancyStatus[wardId - 1][bedIndex] == 0)
         {
@@ -202,40 +184,29 @@ int assignAvailableBed(int wardId)
     return 0;
 }
 
-
-
 void displayBedStatus(void)
 {
     printf("\n==================================================\n");
     printf("                  BED STATUS\n");
     printf("==================================================\n");
 
-    for (int wardIndex = 0;
-         wardIndex < NUMBER_OF_WARDS;
-         wardIndex++)
+    for (int wardIndex = 0; wardIndex < NUMBER_OF_WARDS; wardIndex++)
     {
-        printf("\n%s\n",
-               wardNames[wardIndex]);
+        printf("\n%s\n", wardNames[wardIndex]);
 
-        for (int bedIndex = 0;
-             bedIndex < wardBedCapacities[wardIndex];
-             bedIndex++)
+        for (int bedIndex = 0; bedIndex < wardBedCapacities[wardIndex]; bedIndex++)
         {
             if (bedOccupancyStatus[wardIndex][bedIndex] == 0)
             {
-                printf("Bed %02d : Available\n",
-                       bedIndex + 1);
+                printf("Bed %02d : Available\n", bedIndex + 1);
             }
             else
             {
-                printf("Bed %02d : Occupied\n",
-                       bedIndex + 1);
+                printf("Bed %02d : Occupied\n", bedIndex + 1);
             }
         }
     }
 }
-
-
 
 void registerPatient(void)
 {
@@ -252,101 +223,58 @@ void registerPatient(void)
     printf("==================================================\n");
 
     printf("Enter patient name: ");
-    scanf(" %[^\n]",
-          patientNames[patientIndex]);
+    scanf(" %[^\n]", patientNames[patientIndex]);
 
     printf("Enter patient age: ");
-    scanf("%d",
-          &patientAges[patientIndex]);
-
-
+    scanf("%d", &patientAges[patientIndex]);
 
     printf("\nUrgency Level\n");
     printf("1. Normal\n");
     printf("2. Urgent\n");
     printf("3. Critical\n");
-
     printf("Enter urgency level: ");
-
-    scanf("%d",
-          &patientUrgencyLevels[patientIndex]);
-
-
+    scanf("%d", &patientUrgencyLevels[patientIndex]);
 
     printf("\nSpecialties\n");
-
-    for (int i = 0;
-         i < NUMBER_OF_SPECIALTIES;
-         i++)
+    for (int i = 0; i < NUMBER_OF_SPECIALTIES; i++)
     {
-        printf("%d. %s\n",
-               i + 1,
-               specialtyNames[i]);
+        printf("%d. %s\n", i + 1, specialtyNames[i]);
     }
-
     printf("Enter specialty: ");
-
-    scanf("%d",
-          &patientSpecialtyIds[patientIndex]);
-
-
+    scanf("%d", &patientSpecialtyIds[patientIndex]);
 
     if (patientSpecialtyIds[patientIndex] >= 1 &&
-        patientSpecialtyIds[patientIndex] <=
-        NUMBER_OF_SPECIALTIES)
+        patientSpecialtyIds[patientIndex] <= NUMBER_OF_SPECIALTIES)
     {
-        int specId =
-            patientSpecialtyIds[patientIndex];
+        int specId = patientSpecialtyIds[patientIndex];
 
-        float estWaitTime =
-            calculateWaitingTime(specId);
+        float estWaitTime = calculateWaitingTime(specId);
 
-        printf("Estimated waiting time: %.0f minutes\n",
-               estWaitTime);
+        printf("Estimated waiting time: %.0f minutes\n", estWaitTime);
 
         specialtyQueueCounts[specId - 1]++;
     }
 
-
     printf("\nIs the patient admitted to a ward?\n");
     printf("1. Yes\n");
     printf("0. No\n");
-
     printf("Enter choice: ");
-
-    scanf("%d",
-          &patientAdmissionStatus[patientIndex]);
-
+    scanf("%d", &patientAdmissionStatus[patientIndex]);
 
     if (patientAdmissionStatus[patientIndex] == 1)
     {
         printf("\nWards\n");
-
-        for (int i = 0;
-             i < NUMBER_OF_WARDS;
-             i++)
+        for (int i = 0; i < NUMBER_OF_WARDS; i++)
         {
-            printf("%d. %s\n",
-                   i + 1,
-                   wardNames[i]);
+            printf("%d. %s\n", i + 1, wardNames[i]);
         }
-
         printf("Enter ward: ");
-
-        scanf("%d",
-              &patientWardIds[patientIndex]);
-
+        scanf("%d", &patientWardIds[patientIndex]);
 
         printf("Enter number of days: ");
+        scanf("%d", &patientAdmissionDays[patientIndex]);
 
-        scanf("%d",
-              &patientAdmissionDays[patientIndex]);
-
-
-        int assignedBedNumber =
-            assignAvailableBed(
-                patientWardIds[patientIndex]);
-
+        int assignedBedNumber = assignAvailableBed(patientWardIds[patientIndex]);
 
         if (assignedBedNumber == 0)
         {
@@ -359,11 +287,9 @@ void registerPatient(void)
         }
         else
         {
-            patientAssignedBeds[patientIndex] =
-                assignedBedNumber;
+            patientAssignedBeds[patientIndex] = assignedBedNumber;
 
-            printf("Bed assigned successfully: Bed %02d\n",
-                   assignedBedNumber);
+            printf("Bed assigned successfully: Bed %02d\n", assignedBedNumber);
         }
     }
     else
@@ -373,37 +299,21 @@ void registerPatient(void)
         patientAssignedBeds[patientIndex] = 0;
     }
 
-
     calculatePatientBill(patientIndex);
-
 
     totalPatients++;
 
     printf("\nPatient registered successfully.\n");
 
-
-    printf("Base Fee      : LKR %.2f\n",
-           patientBaseFees[patientIndex]);
-
-    printf("Surcharge     : LKR %.2f\n",
-           patientSurcharges[patientIndex]);
-
-    printf("Ward Cost     : LKR %.2f\n",
-           patientWardCosts[patientIndex]);
-
-    printf("Gross Bill    : LKR %.2f\n",
-           patientGrossBills[patientIndex]);
-
-    printf("Discount      : LKR %.2f\n",
-           patientDiscounts[patientIndex]);
-
-    printf("Final Bill    : LKR %.2f\n",
-           patientFinalBills[patientIndex]);
+    printf("Base Fee      : LKR %.2f\n", patientBaseFees[patientIndex]);
+    printf("Surcharge     : LKR %.2f\n", patientSurcharges[patientIndex]);
+    printf("Ward Cost     : LKR %.2f\n", patientWardCosts[patientIndex]);
+    printf("Gross Bill    : LKR %.2f\n", patientGrossBills[patientIndex]);
+    printf("Discount      : LKR %.2f\n", patientDiscounts[patientIndex]);
+    printf("Final Bill    : LKR %.2f\n", patientFinalBills[patientIndex]);
 }
 
-
-float calculateEmergencySurcharge(float baseFee,
-                                  int urgencyLevel)
+float calculateEmergencySurcharge(float baseFee, int urgencyLevel)
 {
     if (urgencyLevel == 2)
     {
@@ -417,29 +327,20 @@ float calculateEmergencySurcharge(float baseFee,
     return 0.00;
 }
 
-
-
-float calculateWardCost(int wardId,
-                        int numberOfDays)
+float calculateWardCost(int wardId, int numberOfDays)
 {
-    if (wardId < 1 ||
-        wardId > NUMBER_OF_WARDS ||
-        numberOfDays <= 0)
+    if (wardId < 1 || wardId > NUMBER_OF_WARDS || numberOfDays <= 0)
     {
         return 0.00;
     }
 
-    return wardDailyRates[wardId - 1]
-           * numberOfDays;
+    return wardDailyRates[wardId - 1] * numberOfDays;
 }
 
 
-float calculateAgeDiscount(float grossBill,
-                           int patientAge)
+float calculateAgeDiscount(float grossBill, int patientAge)
 {
-
-    if (patientAge < 5 ||
-        patientAge > 65)
+    if (patientAge < 5 || patientAge > 65)
     {
         return grossBill * 0.15;
     }
@@ -448,14 +349,15 @@ float calculateAgeDiscount(float grossBill,
 }
 
 
+float calculateFinalAmount(float grossBill, float discount)
+{
+    return grossBill - discount;
+}
 
 void calculatePatientBill(int patientIndex)
 {
-
     patientBaseFees[patientIndex] =
-        specialtyFees[
-            patientSpecialtyIds[patientIndex] - 1
-        ];
+        specialtyFees[patientSpecialtyIds[patientIndex] - 1];
 
     patientSurcharges[patientIndex] =
         calculateEmergencySurcharge(
@@ -471,11 +373,8 @@ void calculatePatientBill(int patientIndex)
 
     patientGrossBills[patientIndex] =
         patientBaseFees[patientIndex]
-        +
-        patientSurcharges[patientIndex]
-        +
-        patientWardCosts[patientIndex];
-
+        + patientSurcharges[patientIndex]
+        + patientWardCosts[patientIndex];
 
     patientDiscounts[patientIndex] =
         calculateAgeDiscount(
@@ -483,9 +382,9 @@ void calculatePatientBill(int patientIndex)
             patientAges[patientIndex]
         );
 
-
     patientFinalBills[patientIndex] =
-        patientGrossBills[patientIndex]
-        -
-        patientDiscounts[patientIndex];
+        calculateFinalAmount(
+            patientGrossBills[patientIndex],
+            patientDiscounts[patientIndex]
+        );
 }
