@@ -70,7 +70,20 @@ int wardBedCapacities[NUMBER_OF_WARDS] =
 int bedOccupancyStatus[NUMBER_OF_WARDS][MAX_BEDS] = {0};
 
 
+char patientNames[MAX_PATIENTS][50];
+
+int patientAges[MAX_PATIENTS];
+int patientUrgencyLevels[MAX_PATIENTS];
+int patientSpecialtyIds[MAX_PATIENTS];
+int patientAdmissionStatus[MAX_PATIENTS];
+int patientWardIds[MAX_PATIENTS];
+int patientAdmissionDays[MAX_PATIENTS];
+
+int totalPatients = 0;
+
+
 void displayBedStatus(void);
+void registerPatient();
 
 int main()
 {
@@ -97,7 +110,7 @@ int main()
         switch (menuChoice)
         {
             case 1:
-                printf("\nPatient registration selected.\n");
+               registerPatient();
                 break;
 
             case 2:
@@ -160,4 +173,84 @@ void displayBedStatus()
             }
         }
     }
+}
+
+void registerPatient()
+{
+    int patientIndex;
+
+    if (totalPatients >= MAX_PATIENTS)
+    {
+        printf("\nPatient limit reached.\n");
+        return;
+    }
+
+    patientIndex = totalPatients;
+
+    printf("\n");
+    printf("==================================================\n");
+    printf("              PATIENT REGISTRATION\n");
+    printf("==================================================\n");
+
+    printf("Enter patient name: ");
+    scanf(" %[^\n]", patientNames[patientIndex]);
+
+    printf("Enter patient age: ");
+    scanf("%d", &patientAges[patientIndex]);
+
+    printf("\nUrgency Level\n");
+    printf("1. Normal\n");
+    printf("2. Urgent\n");
+    printf("3. Critical\n");
+    printf("Enter urgency level: ");
+    scanf("%d", &patientUrgencyLevels[patientIndex]);
+
+    printf("\nSpecialties\n");
+
+    for (int specialtyIndex = 0;
+         specialtyIndex < NUMBER_OF_SPECIALTIES;
+         specialtyIndex++)
+    {
+        printf("%d. %s\n",
+               specialtyIndex + 1,
+               specialtyNames[specialtyIndex]);
+    }
+
+    printf("Enter specialty: ");
+    scanf("%d", &patientSpecialtyIds[patientIndex]);
+
+    printf("\nIs the patient admitted to a ward?\n");
+    printf("1. Yes\n");
+    printf("0. No\n");
+    printf("Enter choice: ");
+    scanf("%d", &patientAdmissionStatus[patientIndex]);
+
+    if (patientAdmissionStatus[patientIndex] == 1)
+    {
+        printf("\nWards\n");
+
+        for (int wardIndex = 0;
+             wardIndex < NUMBER_OF_WARDS;
+             wardIndex++)
+        {
+            printf("%d. %s\n",
+                   wardIndex + 1,
+                   wardNames[wardIndex]);
+        }
+
+        printf("Enter ward: ");
+        scanf("%d", &patientWardIds[patientIndex]);
+
+        printf("Enter number of days: ");
+        scanf("%d", &patientAdmissionDays[patientIndex]);
+    }
+    else
+    {
+        patientWardIds[patientIndex] = 0;
+        patientAdmissionDays[patientIndex] = 0;
+    }
+
+    totalPatients++;
+
+    printf("\nPatient registered successfully.\n");
 }
